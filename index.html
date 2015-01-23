@@ -31,7 +31,7 @@
 
         // fire off the request to /form.php
         request = $.ajax({
-          url : "https://script.google.com/macros/s/AKfycbyqlOoUXXf0lNPYor6jR2UyN2wT_GJKo3Q73xwBIeIti7PLs2M/exec",
+          url : "https://script.google.com/macros/s/AKfycbwy_70uxGw1hsNbgXN0K9Lnjt2vFriM14qfdQmE0dIyNq6Vbjo/exec",
           type : "post",
           data : serializedData
         });
@@ -39,7 +39,11 @@
         // callback handler that will be called on success
         request.done(function (response, textStatus, jqXHR) {
           // log a message to the console
-          $('#result').html('<a href="https://docs.google.com/spreadsheets/d/1vIqlwZzIS6OdBnz_wIEl9WdpIZYLYTk1rLQ2qZv4mio/edit?usp=sharing" target="_blank">Success - see Google Sheet</a>');
+          if(response.result == "success") {
+            $('#result').text('Data sent');
+          } else {
+            $('#result').text('Got an error: ' + response.error);
+          }
         });
 
         // callback handler that will be called on failure
@@ -49,6 +53,7 @@
             "The following error occured: " +
             textStatus, errorThrown
           );
+          $('#result').text('Got an error: ' + textStatus);
         });
 
         // callback handler that will be called regardless
@@ -71,10 +76,10 @@
 
 <form id="foo">
   <label for="name">Name</label>
-  <input type="text" name="name" id="name"/>
+  <input type="text" name="name" id="name" required="required"/>
   <br />
   <label for="email">Email</label>
-  <input type="email" name="email" id="email"/>
+  <input type="email" name="email" id="email" required="required"/>
   <br />
   <label for="url">Portfolio URL</label>
   <input type="url" name="url" id="url"/>
